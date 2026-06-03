@@ -1,0 +1,19 @@
+chromosome	position	ref	alt	region_id	note
+chr8	127401060	G	T	8q24_rs6983267	rs6983267; 8q24.21 MYC enhancer; G>T; TCF7L2/Wnt-responsive; Tomlinson 2007 NatGenet, Pomerantz 2009 NatGenet
+chr8	127472793	A	C	8q24_rs1447295	rs1447295; 8q24.21 MYC upstream; A>C; Amundadottir 2006 NatGenet
+chr8	127112671	C	A	8q24_rs16901979	rs16901979; 8q24.21 region2 enhancer; C>A; Gudmundsson 2007 NatGenet
+chr10	46046326	A	G	10q11_rs10993994	rs10993994; MSMB promoter; A>G (T>C on plus-strand annot); reduces PSP94; Lou 2009 NatGenet
+chr6	116888889	T	C	6q22_rs339331	rs339331; RFX6 stromal enhancer; T>C disrupts HOXB13 motif; Huang 2014 NatCommun
+chr8	127015709	G	A	8q24_rs7463326	rs7463326; 8q24 region3 enhancer; G>A; Gudmundsson 2009
+chr17	715725	T	C	17p13_rs684232	rs684232; near VPS53 / 17p13 PCa risk SNP; T>C; Gudmundsson 2007 NatGenet
+chr17	37714971	A	G	17q12_rs11649743	rs11649743; HNF1B locus 17q12; A>G; Sun 2008 NatGenet
+chr17	37738049	A	G	17q12_rs4430796	rs4430796; HNF1B intron lead SNP 17q12; A>G; Gudmundsson 2007 NatGenet
+chr19	50861367	A	G	19q13_rs2735839	rs2735839; KLK2/KLK3 intergenic; A>G; affects PSA & PCa risk; Eeles 2008 NatGenet
+chr7	27936944	G	A	7p15_rs10486567	rs10486567; JAZF1 intron; G>A; Thomas 2008 NatGenet
+chrX	51498820	C	T	Xp11_rs5945619	rs5945619; Xp11 NUDT11 region; C>T; Eeles 2008 NatGenet
+chr3	87061524	T	C	3p12_rs2660753	rs2660753; intergenic 3p12; T>C; Eeles 2008 NatGenet
+chr17	71112612	G	T	17q24_rs1859962	rs1859962; 17q24 intergenic near SOX9; G>T; Gudmundsson 2008
+chr5	1895715	C	T	5p15_rs12653946	rs12653946; IRX4 intron; C>T; affects IRX4 expression; Xu 2014
+chr8	127428925	C	T	8q24_rs7000448	rs7000448; 8q24 region 4 enhancer; C>T; Haiman 2007 NatGenet
+chr7	98187015	C	T	7q21_rs6465657	rs6465657; LMTK2 intron; C>T; Eeles 2008 NatGenet
+chr3	128319530	C	A	3q21_rs10934853	rs10934853; EEFSEC intron; C>A; Kote-Jarai 2011 NatGenet

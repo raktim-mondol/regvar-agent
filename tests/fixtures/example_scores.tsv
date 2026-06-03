@@ -1,0 +1,8 @@
+query_variant	gene_name	assay	output_type	biosample_name	raw_score	quantile_score	abs_effect
+chr8:127401060:G>T	MYC	ATAC-seq	ATAC	prostate	0.52	0.91	0.91
+chr8:127401060:G>T	MYC	ATAC-seq	ATAC	fibroblast	0.48	0.87	0.87
+chr8:127401060:G>T	MYC	RNA-seq	RNA_SEQ	prostate	0.41	0.79	0.79
+chr8:127401060:G>T	CCAT2	ChIP-seq histone	CHIP_HISTONE	fibroblast	0.36	0.74	0.74
+chr10:46046326:A>G	MSMB	RNA-seq	RNA_SEQ	hepatocyte	0.55	0.92	0.92
+chr10:46046326:A>G	MSMB	ATAC-seq	ATAC	keratinocyte	0.33	0.61	0.61
+chr10:46046326:A>G	MSMB	ChIP-seq TF	CHIP_TF	T-cell	0.28	0.55	0.55

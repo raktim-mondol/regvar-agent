@@ -1,0 +1,24 @@
+# Core genomic model API (free, non-commercial; key at deepmind.google.com/science/alphagenome)
+alphagenome
+pandas
+numpy
+anndata
+
+# LLM agent loop (DeepSeek via OpenAI-compatible API)
+openai>=1.0
+
+# Environment variable loading from .env
+python-dotenv
+
+# CLI
+click>=8.0
+rich>=13.0
+textual>=0.55.0
+matplotlib>=3.7
+
+# MCP server (optional, for external agent clients such as Claude Code)
+mcp[cli]
+
+# Dev / tests
+pytest
+

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "regvar"
+version = "0.1.0"
+description = "AlphaGenome-powered regulatory variant triage with LLM-agent orchestration"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "openai>=1.0",
+    "python-dotenv",
+    "alphagenome",
+    "pandas",
+    "numpy",
+    "matplotlib>=3.7",
+    "pyarrow",
+]
+
+[project.scripts]
+regvar = "regvar.cli:cli"
+
+[project.optional-dependencies]
+tui    = ["textual>=0.55.0"]
+mcp    = ["mcp[cli]"]
+mofa   = ["mofapy2", "anndata"]
+report = ["jinja2>=3.0"]
+vcf    = ["cyvcf2"]
+dev    = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["regvar*"]

@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.pkl
+.cache/
+~/.cache/regvar/
+# Real secrets — never commit
+.env
+*.egg-info/
+dist/
+build/
+docs/
+CLAUDE.md
+.commandcode/
+.superpowers/
+.qoder/
+.claude/
+reports/
+results/
+mofa_data/
+=3.0

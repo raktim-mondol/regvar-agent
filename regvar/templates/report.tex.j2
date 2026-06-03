@@ -1,0 +1,124 @@
+\documentclass[10pt]{article}
+
+% ── geometry: 1-inch margins for compact one-page layout ──
+\usepackage[letterpaper, margin=0.85in, bottom=0.75in, top=0.75in]{geometry}
+
+% ── typography ──
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\setlength{\parskip}{4pt plus 1pt minus 1pt}
+
+% ── tables ──
+\usepackage{booktabs}
+\usepackage{array}
+\renewcommand{\arraystretch}{1.15}
+
+% ── graphics ──
+\usepackage{graphicx}
+
+% ── colours ──
+\usepackage[svgnames]{xcolor}
+\definecolor{regblue}{HTML}{1a56db}
+\definecolor{reggreen}{HTML}{059669}
+\definecolor{regamber}{HTML}{d97706}
+\definecolor{reggray}{HTML}{6b7280}
+\definecolor{reglight}{HTML}{f0f4ff}
+\definecolor{regborder}{HTML}{e5e7eb}
+
+\definecolor{tiercolor}{HTML}{ {{ tier_color }} }
+
+% ── headers / footers ──
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{reggray} {{ assays_count }} assays scored{% if tissue %} · {{ tissue }}{% endif %}}
+\fancyfoot[R]{\footnotesize\color{reggray} Page 1/1}
+
+% ── no page number ──
+\pagenumbering{gobble}
+
+\begin{document}
+
+% ═══════════════════════════════════════════════════════════════════════
+% HEADER
+% ═══════════════════════════════════════════════════════════════════════
+
+{\raggedright
+  {\Large\bfseries Regulatory Variant Report}\\[2pt]
+  {\footnotesize\color{reggray} AlphaGenome + DeepSeek Agent Analysis \hfill {{ date }} · regvar v0.1.0}
+}
+
+\vspace{4pt}
+{\color{regblue}\rule{\textwidth}{2.5pt}\relax}
+\vspace{8pt}
+
+% ═══════════════════════════════════════════════════════════════════════
+% VARIANT IDENTITY BAR
+% ═══════════════════════════════════════════════════════════════════════
+
+\colorbox{reglight}{{ "{" }}%
+  \parbox{\dimexpr\textwidth-2\fboxsep\relax}{{ "{" }}%
+    \raggedright
+    {\Large\bfseries\ttfamily {{ variant_id }}}\\[2pt]
+    {\footnotesize\color{reggray}
+      {% if rsid %}{{ rsid }} \textbullet\ {% endif %}{% if cytoband %}{{ cytoband }} \textbullet\ {% endif %}{{ gene_context }}
+      \hfill
+      \colorbox{tiercolor}{\textcolor{white}{\footnotesize\bfseries {{ tier }}}\relax}
+    }
+  }%
+}
+
+\vspace{10pt}
+
+% ═══════════════════════════════════════════════════════════════════════
+% FIGURE ROW
+% ═══════════════════════════════════════════════════════════════════════
+
+\begin{minipage}[t]{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{ {{ locus_figure }} }
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{ {{ barplot_figure }} }
+\end{minipage}
+
+\vspace{8pt}
+
+% ═══════════════════════════════════════════════════════════════════════
+% SCORING SUMMARY TABLE
+% ═══════════════════════════════════════════════════════════════════════
+
+{\footnotesize\bfseries\color{reggray} Scoring Summary}\\[3pt]
+{\color{regborder}\rule{\textwidth}{0.5pt}\relax}\\[2pt]
+
+\begin{tabular}{@{}p{0.22\textwidth}p{0.18\textwidth}p{0.22\textwidth}r@{\hskip 8pt}r@{} \relax}
+\toprule
+\footnotesize\bfseries Assay & \footnotesize\bfseries Gene & \footnotesize\bfseries Biosample & \footnotesize\bfseries Raw & \footnotesize\bfseries Quantile \\
+\midrule
+{% for s in top_scores %}
+{{ s.assay }} & {{ s.gene_name }} & {{ s.biosample_name }} & {{ "%.2f"|format(s.raw_score) }} & \textcolor{regblue}{\bfseries {{ "%.2f"|format(s.quantile_score) }} } \\
+{% endfor %}
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+
+% ═══════════════════════════════════════════════════════════════════════
+% INTERPRETATION
+% ═══════════════════════════════════════════════════════════════════════
+
+{\footnotesize\bfseries\color{reggray} Interpretation}\\[3pt]
+{\color{regborder}\rule{\textwidth}{0.5pt}\relax}\\[3pt]
+
+{\small {{ interpretation }} }
+
+{% if validation_plan %}
+\vspace{6pt}
+{\footnotesize\textcolor{reggreen}{\bfseries Recommended validation:} {{ validation_plan }}}
+{% endif %}
+
+\end{document}

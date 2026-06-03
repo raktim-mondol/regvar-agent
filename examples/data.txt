@@ -1,0 +1,1 @@
+Real prostate cancer GWAS fine-mapped non-coding candidate variants (hg38), TSV input for raktim-mondol/regvar-agent. 18 variants; coordinates and REF alleles verified against Ensembl REST (GRCh38) on dbSNP entries
