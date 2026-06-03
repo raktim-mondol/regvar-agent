@@ -32,16 +32,27 @@ The biological framing is prostate cancer: non-coding variants in stromal-fibrob
 flowchart TD
 
     %% ── Input ───────────────────────────────────────────────────────────────
-    A([🧬 candidate_variants.tsv]):::input --> B
+    A([🧬 candidate_variants.tsv\nor .vcf / .vcf.gz]):::input --> ANN
+    CFG([⚙️ regvar.toml]):::config -->|defaults\nassays · tissue\nmodel · top_n| AGENT
+
+    %% ── Annotation layer ──────────────────────────────────────────────────
+    subgraph Annotation["📖  Annotation  ·  regvar/annotation.py"]
+        ANN[annotate_variants]:::annotNode
+        ANN --> G1[nearest gene + TSS distance\nGTF / GTF.gz]:::annotNode
+        ANN --> G2[regulatory overlap\nBED / BED.gz]:::annotNode
+        ANN --> G3[rsID lookup\ndbSNP VCF + tabix]:::annotNode
+    end
+    ANN --> B
 
     %% ── Agent layer ─────────────────────────────────────────────────────────
     subgraph Agent["🤖  DeepSeek v4 Pro Agent  ·  regvar/agent.py"]
-        B[Build task message\nlist variants + context]:::agentNode
+        B[Build task message\nvariants + annotations]:::agentNode
         B --> C{LLM decides\nnext action}:::decision
         C -- tool_calls --> D[Tool dispatcher\nregvar/tools.py]:::toolNode
         D --> E{Which tool?}:::decision
         E -- list_supported_assays --> F[Return assay map]:::toolNode
         E -- score_regulatory_variant --> G
+        E -- score_variants_batch --> G
         F --> C
         G --> C
         C -- finish --> H[Synthesise:\nranking · mechanisms\nvalidation plan]:::agentNode
@@ -49,8 +60,8 @@ flowchart TD
 
     %% ── Client layer ────────────────────────────────────────────────────────
     subgraph Client["⚙️  AlphaGenome Client  ·  regvar/alphagenome_client.py"]
-        G[score_variant call]:::clientNode
-        G --> I{Cache hit?}:::decision
+        G[score_variant / score_variants\n(ThreadPoolExecutor + Semaphore)]:::clientNode
+        G --> I{Cache hit?\nparquet or pkl}:::decision
         I -- yes --> K[Return cached DataFrame]:::clientNode
         I -- no  --> J[Throttle + retry\nexponential backoff]:::clientNode
         J --> L[(☁️ AlphaGenome\nhosted API)]:::apiNode
@@ -61,6 +72,7 @@ flowchart TD
 
     %% ── Output ───────────────────────────────────────────────────────────────
     H --> O([📋 Analysis report\n+ validation plan]):::output
+    H --> OJ([📦 JSON · TSV · PNG]):::output
 
     %% ── Assays panel ─────────────────────────────────────────────────────────
     subgraph Assays["🔬  Scored assays"]
@@ -73,20 +85,23 @@ flowchart TD
     L -.->|scores across| Assays
 
     classDef input       fill:#dce8f5,stroke:#5a8fba,color:#1a2e45,font-style:italic
+    classDef config      fill:#fff3e0,stroke:#d4854a,color:#3a1e05,font-style:italic
     classDef output      fill:#d4edda,stroke:#4a9a6a,color:#1a3a22,font-style:italic
     classDef agentNode   fill:#dce8f5,stroke:#5a8fba,color:#1a2e45
     classDef decision    fill:#f3edf7,stroke:#9b7ec8,color:#2e1a45
     classDef toolNode    fill:#fce8d5,stroke:#d4854a,color:#3a1e05
     classDef clientNode  fill:#e8f5e9,stroke:#4a9a6a,color:#1a3a22
     classDef apiNode     fill:#fff8e1,stroke:#c8a020,color:#3a2800,font-weight:bold
+    classDef annotNode   fill:#f3edf7,stroke:#9b7ec8,color:#2e1a45
     classDef assayATAC   fill:#dce8f5,stroke:#5a8fba,color:#1a2e45
     classDef assayRNA    fill:#e8f5e9,stroke:#4a9a6a,color:#1a3a22
     classDef assayChIP   fill:#fff3e0,stroke:#d4854a,color:#3a1e05
     classDef assayHiC    fill:#f3edf7,stroke:#9b7ec8,color:#2e1a45
 
-    style Agent   fill:#f7fbff,stroke:#7aafd4,stroke-width:2px,color:#1a2e45
-    style Client  fill:#f2faf3,stroke:#6abf7a,stroke-width:2px,color:#1a3a22
-    style Assays  fill:#fdfaf5,stroke:#c8a020,stroke-width:2px,color:#3a2800
+    style Agent      fill:#f7fbff,stroke:#7aafd4,stroke-width:2px,color:#1a2e45
+    style Client     fill:#f2faf3,stroke:#6abf7a,stroke-width:2px,color:#1a3a22
+    style Assays     fill:#fdfaf5,stroke:#c8a020,stroke-width:2px,color:#3a2800
+    style Annotation fill:#fbf5ff,stroke:#9b7ec8,stroke-width:2px,color:#2e1a45
 ```
 
 ---
@@ -97,11 +112,13 @@ flowchart TD
 regvar/
   __init__.py             package exports
   __main__.py             python -m regvar entry point → delegates to cli.py
-  cli.py                  click CLI: score / plot / agent / mofa / report / assays / tui
+  cli.py                  click CLI: score / plot / agent / mofa / report / cache / assays / tui
   plot.py                 matplotlib barplot helper + REF/ALT locus figure (dark theme)
   tui.py                  Textual TUI: interactive tabs for all commands
-  alphagenome_client.py   hardened AlphaGenome wrapper (cache · retry · throttle)
-  variants.py             TSV parsing, coordinate conventions, effect ranking
+  alphagenome_client.py   hardened AlphaGenome wrapper (cache · retry · throttle · parallel scoring)
+  variants.py             TSV/VCF parsing, coordinate conventions, effect ranking, chromosome validation
+  annotation.py           optional genomic context: nearest gene (GTF), regulatory overlap (BED), rsID (dbSNP VCF)
+  config.py               TOML config loader (~/.config/regvar/config.toml or ./regvar.toml)
   tools.py                validated tool boundary + OpenAI & Anthropic schemas
   agent.py                DeepSeek tool-use agent loop → analysis + validation plan
   report.py               one-page variant report generator (LaTeX PDF via Jinja2)
@@ -116,8 +133,11 @@ examples/
   example_genotypes.tsv   sample genotype table for MOFA+ integration
 tests/
   test_variants.py        unit tests for coordinate logic and ranking
-  test_tui.py             headless Textual Pilot smoke tests for the TUI
-  test_mofa.py            unit tests for genotype bridge and MOFA+ view building
+  test_vcf.py             unit tests for VCF reader (cyvcf2)
+  test_annotation.py      unit tests for GTF/BED annotation + composite annotator
+  test_config.py          unit tests for TOML config loader
+  test_parallel.py        unit tests for parallel score_variants()
+  test_tools.py / test_agent.py / test_cli.py / test_tui.py / test_mofa.py
 requirements.txt
 ```
 
@@ -156,19 +176,25 @@ pytest -q
 `regvar` is structured as four command groups plus flat utility commands.
 
 ```
-regvar
+regvar [--config FILE]
 ├── score                    score a single variant (no agent)
 ├── plot
 │   └── effects              barplot of top predicted effects
 ├── agent
-│   ├── run                  full triage loop over a TSV
+│   ├── run                  full triage loop over a TSV / VCF
+│   │                          (--annotate · --max-concurrent · --output-json)
 │   └── chat                 interactive REPL with the agent
+│                              (--save-session · --load-session · --output
+│                               --reasoning-effort)
 ├── mofa
 │   ├── build                build MOFA+-ready view matrices
 │   ├── run                  train a MOFA+ model
 │   └── compare              compare models with vs. without variant views
 ├── report
 │   └── generate             generate one-page PDF report per candidate variant
+├── cache
+│   ├── info                 show cache directory, size, entry count
+│   └── clear                delete cached entries (optionally by age)
 ├── assays                   list supported assays
 ├── tui                      launch the Textual TUI
 └── run                      ← alias for `agent run` (backward compat)
@@ -227,15 +253,19 @@ The agent will:
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `-a` / `--assays` | ATAC-seq, RNA-seq, ChIP-seq histone, Hi-C / pcHi-C | Comma-separated assay list |
+| `-a` / `--assays` | ATAC-seq, RNA-seq, ChIP-seq histone, Hi-C / pcHi-C | Comma-separated assay list, or `all` |
 | `-t` / `--tissue` | `UBERON:0002367` | Comma-separated UBERON/CL ontology terms |
 | `-n` / `--top-n` | `10` | Effects per variant |
 | `-m` / `--model` | `deepseek-v4-pro` | LLM model |
 | `-o` / `--output` | — | Save markdown report to file |
 | `--output-tsv` | — | Save ranked scores as TSV |
+| `--output-json` | — | Save structured JSON with metadata, scores, and report |
 | `--dry-run` | off | Validate input, no API calls |
 | `-v` / `--verbose` | off | Show full tool-call arguments |
 | `-q` / `--quiet` | off | Only print the final report |
+| `--force` | off | Proceed when variant count exceeds the safety limit (500) |
+| `--max-concurrent` | 1 | Parallel scoring workers (1 = serial, N > 1 uses a thread pool) |
+| `--annotate` | — | Directory with `genes.gtf(.gz)`, `peaks.bed(.gz)`, `dbsnp.vcf.gz`; any subset |
 
 ### `regvar agent chat` — interactive REPL
 
@@ -245,9 +275,33 @@ the agent calls AlphaGenome tools on demand.
 ```bash
 regvar agent chat
 regvar agent chat --tissue UBERON:0002367 --top-n 15
+regvar agent chat --reasoning-effort low --save-session chat.json
+regvar agent chat --load-session chat.json --output transcript.md
 ```
 
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-m` / `--model` | `deepseek-v4-pro` | LLM model |
+| `-a` / `--assays` | — | Preferred assays (passed as context) |
+| `-t` / `--tissue` | — | Preferred tissue ontology terms |
+| `-n` / `--top-n` | `10` | Default top-N per scoring call |
+| `-o` / `--output` | — | On exit, save the full conversation transcript as markdown |
+| `--reasoning-effort` | `high` | `low` / `medium` / `high` / `off` (off disables extended thinking) |
+| `--save-session` | — | Save message history as JSON (for `--load-session`) |
+| `--load-session` | — | Resume a previously saved JSON session |
+
 Type `exit` or press `Ctrl-C` to quit.
+
+### `regvar cache` — manage the AlphaGenome score cache
+
+```bash
+regvar cache info                                  # show dir, size, entry count
+regvar cache clear                                  # delete all cache files
+regvar cache clear --older-than 30                  # only entries older than 30 days
+regvar cache clear --older-than 30 -y               # skip confirmation prompt
+```
+
+Cache lives at `~/.cache/regvar/` (parquet + legacy pickle).
 
 ### `regvar assays` — list supported assays
 
@@ -272,6 +326,78 @@ Three tabs are available:
 | **☰ Assays** | `3` | Browse all supported assays and their wet-lab readouts |
 
 Press `F1` for a keyboard-shortcut summary. Press `Ctrl+Q` to quit.
+
+---
+
+## Config file (TOML)
+
+regvar reads defaults from a TOML file. Locations checked in order:
+
+1. `--config FILE` (or `$REGVAR_CONFIG`)
+2. `./regvar.toml`
+3. `~/.config/regvar/config.toml`
+
+```toml
+# regvar.toml
+[defaults]
+assays = ["ATAC-seq", "RNA-seq", "ChIP-seq histone"]
+tissue = ["UBERON:0002367"]
+model  = "deepseek-v4-pro"
+top_n  = 10
+max_concurrent = 4
+
+[cache]
+dir = "~/.cache/regvar"
+max_variants = 500
+```
+
+Per-command overrides are also accepted (`[score]`, `[agent_run]`, `[agent_chat]`,
+or the nested form `[agent.run]`, `[agent.chat]`). Precedence: CLI flags >
+config file > environment variables > built-in defaults.
+
+Requires Python 3.11+ (stdlib `tomllib`) or `pip install tomli` on 3.10.
+
+---
+
+## Variant Annotation
+
+Enrich candidate variants with genomic context before the agent runs — the
+annotations are injected into the agent's task message so the LLM can reason
+about each variant's locus.
+
+```bash
+regvar agent run candidates.tsv --annotate /path/to/refdata
+```
+
+`refdata/` is scanned for (any subset is accepted):
+
+| File | What it provides |
+|------|------------------|
+| `genes.gtf` / `genes.gtf.gz` | Nearest gene + signed TSS distance |
+| `peaks.bed` / `peaks.bed.gz` | Overlapping regulatory element names |
+| `dbsnp.vcf.gz` (tabix-indexed) | rsID lookup |
+
+Example output in the candidate-variant table:
+
+```
+│ 8 │ chr8:127428925:C>T │ 8q24_rs7000448 │ ... │ gene=MYC (+28925bp) │
+```
+
+Python API:
+
+```python
+from regvar import annotate_variants, CandidateVariant
+
+variants = [CandidateVariant("chr8", 127401060, "G", "T")]
+annotations = annotate_variants(
+    variants,
+    gtf_path="genes.gtf",
+    bed_path="peaks.bed",
+)
+for vid, ann in annotations.items():
+    print(vid, "→", ann.to_note())
+# chr8:127401060:G>T → gene=MYC (+1060bp) | overlap=enhancer_1
+```
 
 ---
 
@@ -568,6 +694,16 @@ chr17       48800000    G    A    HOXB13_prom   promoter-proximal, prostate TF
 chr2        241500000   T    G    ctrl_region   intergenic negative control
 ```
 
+VCF / VCF.gz files are auto-detected by extension and expanded allele-per-row:
+
+```bash
+regvar agent run gwas_hits.vcf.gz
+```
+
+Multi-allelic sites are split; missing `chr` prefixes are added automatically;
+the VCF `ID` field (e.g. rsIDs) becomes `region_id`.
+Requires `pip install regvar[vcf]` (cyvcf2).
+
 Replace with your own GWAS / fine-mapping candidates.
 
 ---
@@ -579,6 +715,9 @@ Letting an LLM free-form generate API calls in a loop risks silently mishandling
 
 **Why on-disk caching?**
 AlphaGenome's public API is rate-limited and shared. Caching every request means re-running a partially-completed batch or re-analysing the same variants costs nothing and is reproducible.
+
+**Why parallel scoring via a semaphore?**
+`ClientConfig.max_concurrent > 1` dispatches `score_variants()` through a `ThreadPoolExecutor` bounded by a `Semaphore`, with the per-call throttle still acting as the floor. Default concurrency is 1 (serial) — identical to the pre-parallel implementation — so behaviour is backward-compatible and the thread pool only opens when explicitly requested.
 
 **Why DeepSeek v4 Pro?**
 It supports extended thinking (`reasoning_effort="high"`) via the OpenAI-compatible API, making it well suited to multi-step genomic reasoning and structured tool-use loops.
