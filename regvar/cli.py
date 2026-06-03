@@ -87,15 +87,18 @@ def _welcome_screen() -> None:
     c = stdout_console
 
     # ── ASCII logo panel ────────────────────────────────────────────────────
-    logo = Text.from_markup(
-        "[soft_purple]        ___         _               [/soft_purple]\n"
-        "[soft_purple]  _ __  ___| |___   _(_) __ _ _ __ [/soft_purple]\n"
-        "[soft_teal] | '__|/ _ | __\\ \\ / / |/ _` | '__|[/soft_teal]\n"
-        "[soft_blue] | |  |  __| |_ \\ V /| | (_| | |   [/soft_blue]\n"
-        "[soft_green] |_|   \\___|\\__| \\_/ |_|\\__, |_|   [/soft_green]\n"
-        "[soft_green]                         |___/      [/soft_green]\n"
-        "\n"
-        " [dim]AlphaGenome-powered regulatory variant triage · v0.1.0[/dim]"
+    logo = Text()
+    logo.append(
+        " ██████  ███████  ██████  ██    ██  █████  ██████  \n"
+        " ██   ██ ██      ██       ██    ██ ██   ██ ██   ██ \n"
+        " ██████  █████   ██   ███ ██    ██ ███████ ██████  \n"
+        " ██   ██ ██      ██    ██  ██  ██  ██   ██ ██   ██ \n"
+        " ██   ██ ███████  ██████    ████   ██   ██ ██   ██ \n",
+        style="bold white",
+    )
+    logo.append(
+        "\n AlphaGenome-powered regulatory variant triage · v0.1.0",
+        style="dim",
     )
     c.print(Panel(logo, border_style="soft_purple", padding=(0, 2)))
     c.print()

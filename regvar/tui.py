@@ -210,7 +210,7 @@ TabPane {
 class RunAgentTab(TabPane):
     """Interactive form to run the full agent loop."""
 
-    _running: reactive[bool] = reactive(False)
+    _agent_running: reactive[bool] = reactive(False)
 
     def compose(self) -> ComposeResult:
         yield Static("Run Agent", classes="section-title")
@@ -295,7 +295,7 @@ class RunAgentTab(TabPane):
 
     @on(Button.Pressed, "#btn-run-agent")
     async def handle_run(self) -> None:
-        if self._running:
+        if self._agent_running:
             return
         tsv = self.query_one("#run-tsv", Input).value.strip()
         if not tsv:
@@ -307,7 +307,7 @@ class RunAgentTab(TabPane):
             self._set_status(f"File not found: {tsv}", kind="error")
             return
 
-        self._running = True
+        self._agent_running = True
         self.query_one("#btn-run-agent", Button).disabled = True
         log = self.query_one("#run-log", RichLog)
         log.clear()
@@ -362,6 +362,7 @@ class RunAgentTab(TabPane):
             self.app.call_from_thread(self._append_log, msg)
 
         try:
+            _post(f"[dim]Starting agent run for {tsv_path.name}…[/dim]")
             candidates = _reader(tsv_path)
             _post(f"[cyan]Loaded {len(candidates)} variant(s) from {tsv_path}[/cyan]")
 
@@ -440,7 +441,9 @@ class RunAgentTab(TabPane):
 
             self.app.call_from_thread(self._finish_run, f"Done in {elapsed:.1f}s", answer, None, None)
 
-        except Exception as exc:  # noqa: BLE001
+        except BaseException as exc:  # noqa: BLE001 — catches SystemExit/ImportError too
+            if isinstance(exc, KeyboardInterrupt):
+                raise
             _post(f"[red]Error: {exc}[/red]")
             self.app.call_from_thread(self._finish_run, f"Error: {exc}", None, None, "error")
 
@@ -454,7 +457,7 @@ class RunAgentTab(TabPane):
         _unused: Any,
         kind: str | None,
     ) -> None:
-        self._running = False
+        self._agent_running = False
         self.query_one("#btn-run-agent", Button).disabled = False
         self._set_status(status, kind=kind or ("success" if not kind else kind))
         if answer:
@@ -488,7 +491,7 @@ class RunAgentTab(TabPane):
 class ScoreVariantTab(TabPane):
     """Interactive form to score a single variant."""
 
-    _running: reactive[bool] = reactive(False)
+    _score_running: reactive[bool] = reactive(False)
 
     def compose(self) -> ComposeResult:
         yield Static("Score a Single Variant", classes="section-title")
@@ -545,7 +548,7 @@ class ScoreVariantTab(TabPane):
 
     @on(Button.Pressed, "#btn-score")
     async def handle_score(self) -> None:
-        if self._running:
+        if self._score_running:
             return
 
         chrom = self.query_one("#score-chrom", Input).value.strip()
@@ -581,7 +584,7 @@ class ScoreVariantTab(TabPane):
         except ValueError:
             top_n = 10
 
-        self._running = True
+        self._score_running = True
         self.query_one("#btn-score", Button).disabled = True
         self.query_one("#score-log", RichLog).clear()
         table = self.query_one("#score-table", DataTable)
@@ -676,7 +679,7 @@ class ScoreVariantTab(TabPane):
         self._finish_score(f"Scored {variant_id} — {len(records)} top effect(s) shown.", None)
 
     def _finish_score(self, msg: str, kind: str | None) -> None:
-        self._running = False
+        self._score_running = False
         self.query_one("#btn-score", Button).disabled = False
         self._set_status(msg, kind=kind or "success")
 

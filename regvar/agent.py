@@ -216,11 +216,11 @@ def run_agent(
     try:
         from openai import OpenAI
     except ImportError as exc:
-        raise SystemExit("pip install openai") from exc
+        raise ImportError("pip install openai") from exc
 
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
-        raise SystemExit("Set DEEPSEEK_API_KEY environment variable.")
+        raise RuntimeError("Set DEEPSEEK_API_KEY environment variable.")
 
     client = OpenAI(api_key=api_key, base_url=DEEPSEEK_BASE_URL)
 
