@@ -11,11 +11,12 @@ dist/
 build/
 docs/
 CLAUDE.md
+IMPROVEMENT_PLAN.md
+FEATURE_ROADMAP.md
+AGENTS.md
 .commandcode/
 .superpowers/
 .qoder/
 .claude/
-reports/
 results/
-mofa_data/
 =3.0
