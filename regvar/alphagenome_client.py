@@ -29,8 +29,10 @@ import os
 import pickle
 import random
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from dataclasses import dataclass, field
+from threading import Semaphore
 from typing import Any, Iterable, Sequence
 
 logger = logging.getLogger("regvar.alphagenome")
@@ -62,11 +64,14 @@ class ClientConfig:
     max_retries: int = 5
     base_backoff: float = 2.0                # seconds; doubles each retry
     sequence_length: str = "SEQUENCE_LENGTH_1MB"
+    max_concurrent: int = 1                  # >1 enables parallel score_variants()
 
     def __post_init__(self) -> None:
         self.api_key = self.api_key or os.environ.get("ALPHAGENOME_API_KEY")
         self.cache_dir = Path(self.cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
+        if self.max_concurrent < 1:
+            self.max_concurrent = 1
 
 
 class AlphaGenomeClient:
@@ -81,6 +86,7 @@ class AlphaGenomeClient:
         self._variant_scorers = None
         self._genome = None
         self._last_call_ts = 0.0
+        self._throttle_lock = __import__("threading").Lock()
 
     # -- lazy backend ------------------------------------------------------
     def _ensure_model(self) -> None:
@@ -135,19 +141,18 @@ class AlphaGenomeClient:
 
     # -- throttle + retry --------------------------------------------------
     def _throttle(self) -> None:
-        wait = self.config.min_seconds_between_calls - (time.time() - self._last_call_ts)
-        if wait > 0:
-            time.sleep(wait)
+        with self._throttle_lock:
+            wait = self.config.min_seconds_between_calls - (time.time() - self._last_call_ts)
+            if wait > 0:
+                time.sleep(wait)
+            self._last_call_ts = time.time()
 
     def _call_with_retry(self, fn, *args, **kwargs):
         for attempt in range(self.config.max_retries):
             self._throttle()
             try:
-                result = fn(*args, **kwargs)
-                self._last_call_ts = time.time()
-                return result
+                return fn(*args, **kwargs)
             except Exception as exc:  # noqa: BLE001 - surface, classify, back off
-                self._last_call_ts = time.time()
                 transient = any(
                     tok in str(exc).lower()
                     for tok in ("rate", "quota", "timeout", "unavailable", "503", "429")
@@ -218,21 +223,50 @@ class AlphaGenomeClient:
         self._save_cache(cache_key, tidy)
         return tidy
 
-    def score_variants(self, variants: Iterable[dict[str, Any]], **kwargs):
+    def score_variants(
+        self,
+        variants: Iterable[dict[str, Any]],
+        max_concurrent: int | None = None,
+        **kwargs,
+    ):
         """Batch helper. `variants` is an iterable of dicts with keys
         chromosome, position, ref, alt. Returns a single concatenated DataFrame.
-        Caching means re-running a partially-completed batch is cheap."""
+        Caching means re-running a partially-completed batch is cheap.
+
+        Pass ``max_concurrent`` to override ``ClientConfig.max_concurrent`` for
+        this call. When the value is ``1`` (default), calls run serially and
+        behaviour is identical to the pre-parallel implementation. Higher
+        values dispatch calls through a ``ThreadPoolExecutor`` bounded by a
+        ``Semaphore``; the per-call throttle still acts as the floor.
+        """
         import pandas as pd
 
-        frames = []
-        for v in variants:
+        variant_list = list(variants)
+        concurrency = max_concurrent if max_concurrent is not None else self.config.max_concurrent
+        if concurrency < 1:
+            concurrency = 1
+
+        def _score_one(v: dict[str, Any]) -> "pd.DataFrame":
             df = self.score_variant(
                 chromosome=v["chromosome"], position=v["position"],
                 ref=v["ref"], alt=v["alt"], **kwargs,
             )
             df = df.copy()
             df["query_variant"] = f"{v['chromosome']}:{v['position']}:{v['ref']}>{v['alt']}"
-            frames.append(df)
+            return df
+
+        if concurrency == 1:
+            frames = [_score_one(v) for v in variant_list]
+        else:
+            semaphore = Semaphore(concurrency)
+
+            def _bounded(v: dict[str, Any]) -> "pd.DataFrame":
+                with semaphore:
+                    return _score_one(v)
+
+            with ThreadPoolExecutor(max_workers=concurrency) as pool:
+                frames = list(pool.map(_bounded, variant_list))
+
         return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
     @staticmethod

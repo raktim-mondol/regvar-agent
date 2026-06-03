@@ -18,18 +18,21 @@ dependencies = [
     "numpy",
     "matplotlib>=3.7",
     "pyarrow",
+    "tomli>=2.0; python_version < '3.11'",
 ]
 
 [project.scripts]
 regvar = "regvar.cli:cli"
 
 [project.optional-dependencies]
-tui    = ["textual>=0.55.0"]
-mcp    = ["mcp[cli]"]
-mofa   = ["mofapy2", "anndata"]
-report = ["jinja2>=3.0"]
-vcf    = ["cyvcf2"]
-dev    = ["pytest"]
+tui        = ["textual>=0.55.0"]
+mcp        = ["mcp[cli]"]
+mofa       = ["mofapy2", "anndata"]
+report     = ["jinja2>=3.0"]
+vcf        = ["cyvcf2"]
+annotation = ["pyranges", "pybedtools"]
+config     = ["tomli>=2.0"]
+dev        = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["."]

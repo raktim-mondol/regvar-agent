@@ -196,3 +196,123 @@ def test_plot_effects_help(runner):
     assert "--output" in result.output
     assert "--show" in result.output
     assert "--from-tsv" in result.output
+
+
+# --- chat helpers --------------------------------------------------------
+
+def test_serialize_messages_plain_dict():
+    from regvar.cli import _serialize_messages
+    msgs = [
+        {"role": "user", "content": "hi"},
+        {"role": "assistant", "content": "hello"},
+    ]
+    out = _serialize_messages(msgs)
+    assert out == msgs
+
+
+def test_serialize_messages_pydantic_object():
+    """Pydantic-style message objects get dumped via model_dump."""
+    from regvar.cli import _serialize_messages
+
+    class _Msg:
+        def model_dump(self, exclude_unset=True):
+            return {"role": "assistant", "content": "dumped"}
+
+    out = _serialize_messages([_Msg()])
+    assert out == [{"role": "assistant", "content": "dumped"}]
+
+
+def test_save_load_session_roundtrip(tmp_path):
+    from regvar.cli import _load_session, _save_session
+    msgs = [
+        {"role": "system", "content": "sys"},
+        {"role": "user", "content": "q"},
+        {"role": "assistant", "content": "a"},
+    ]
+    path = tmp_path / "session.json"
+    _save_session(msgs, path)
+    loaded = _load_session(path)
+    assert loaded == msgs
+
+
+def test_load_session_invalid_shape(tmp_path):
+    from regvar.cli import _load_session
+    path = tmp_path / "bad.json"
+    path.write_text('{"not_messages": []}', encoding="utf-8")
+    import pytest
+    with pytest.raises(ValueError, match="messages"):
+        _load_session(path)
+
+
+def test_render_conversation_markdown():
+    from regvar.cli import _render_conversation_markdown
+    msgs = [
+        {"role": "system", "content": "system prompt"},
+        {"role": "user", "content": "score chr8:100 A>G"},
+        {"role": "assistant", "content": "here is the answer"},
+    ]
+    md = _render_conversation_markdown(msgs)
+    assert "# Agent Chat Session" in md
+    assert "## User" in md
+    assert "score chr8:100 A>G" in md
+    assert "here is the answer" in md
+
+
+def test_render_conversation_markdown_with_tool_calls():
+    from regvar.cli import _render_conversation_markdown
+    msgs = [
+        {
+            "role": "assistant",
+            "content": None,
+            "tool_calls": [{
+                "function": {
+                    "name": "score_regulatory_variant",
+                    "arguments": '{"chromosome":"chr8"}',
+                },
+            }],
+        },
+    ]
+    md = _render_conversation_markdown(msgs)
+    assert "score_regulatory_variant" in md
+
+
+def test_agent_chat_help_lists_new_flags(runner):
+    result = runner.invoke(cli, ["agent", "chat", "--help"])
+    assert result.exit_code == 0
+    assert "--save-session" in result.output
+    assert "--load-session" in result.output
+    assert "--reasoning-effort" in result.output
+
+
+def test_agent_run_help_lists_annotate_and_max_concurrent(runner):
+    result = runner.invoke(cli, ["agent", "run", "--help"])
+    assert result.exit_code == 0
+    assert "--annotate" in result.output
+    assert "--max-concurrent" in result.output
+
+
+# --- config default_map integration --------------------------------------
+
+def test_config_default_map_score(runner, tmp_path, monkeypatch):
+    """TOML [defaults] section propagates to subcommands at runtime.
+
+    Click's help formatter shows the *static* default (10 for --top-n), not
+    the runtime default_map override — so we exercise the value via
+    ``agent run --dry-run`` which echoes the effective top_n.
+    """
+    cfg = tmp_path / "cfg.toml"
+    cfg.write_text("[defaults]\ntop_n = 42\n", encoding="utf-8")
+
+    tsv = tmp_path / "candidates.tsv"
+    tsv.write_text(
+        "chromosome\tposition\tref\talt\n"
+        "chr8\t127401060\tG\tT\n",
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        cli,
+        ["--config", str(cfg), "agent", "run", str(tsv), "--dry-run"],
+    )
+    assert result.exit_code == 0
+    assert "Top N: 42" in result.output

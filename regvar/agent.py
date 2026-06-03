@@ -61,8 +61,23 @@ for experimental testing, not clinical conclusions."""
 
 def build_task_message(candidates) -> str:
     lines = ["Candidate regulatory variants:"]
+    try:
+        from .annotation import get_annotation
+    except ImportError:
+        get_annotation = None  # type: ignore[assignment]
     for c in candidates:
-        ctx = f"  ({c.region_id}{'; ' + c.note if c.note else ''})" if c.region_id or c.note else ""
+        note_parts = []
+        if c.region_id or c.note:
+            note_parts.append(c.region_id)
+            if c.note:
+                note_parts.append(c.note)
+        if get_annotation is not None:
+            ann = get_annotation(c.vcf_id)
+            if ann is not None:
+                snippet = ann.to_note()
+                if snippet:
+                    note_parts.append(snippet)
+        ctx = f"  ({'; '.join(p for p in note_parts if p)})" if note_parts else ""
         lines.append(f"  - {c.vcf_id}{ctx}")
     lines.append("\nScore them and produce the prioritised analysis and validation plan.")
     return "\n".join(lines)

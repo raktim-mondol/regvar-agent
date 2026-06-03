@@ -48,6 +48,26 @@ def test_build_task_message_no_metadata():
     assert "()" not in msg
 
 
+def test_build_task_message_includes_annotations():
+    """When an annotation is registered, its snippet appears in the task message."""
+    from regvar.annotation import VariantAnnotation, _ANNOTATIONS
+    _ANNOTATIONS.clear()
+    candidates = [CandidateVariant("chr8", 100, "A", "G")]
+    _ANNOTATIONS["chr8:100:A>G"] = VariantAnnotation(
+        variant=candidates[0],
+        nearest_gene="MYC",
+        tss_distance=-500,
+        rsid="rs1234",
+    )
+    try:
+        msg = build_task_message(candidates)
+        assert "chr8:100:A>G" in msg
+        assert "MYC" in msg
+        assert "rsid=rs1234" in msg
+    finally:
+        _ANNOTATIONS.clear()
+
+
 def test_build_system_prompt_no_hints():
     result = _build_system_prompt()
     assert result == SYSTEM_PROMPT

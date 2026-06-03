@@ -118,7 +118,9 @@ def _print_variant_table(candidates) -> None:
     table.add_column("Region", style="assay")
     table.add_column("Note", style="dim", max_width=60)
     for i, c in enumerate(candidates, 1):
-        table.add_row(str(i), c.vcf_id, c.region_id or "—", c.note or "—")
+        note_parts = [p for p in (c.note or "", _ann_note(c.vcf_id)) if p]
+        note = " | ".join(note_parts) if note_parts else "—"
+        table.add_row(str(i), c.vcf_id, c.region_id or "—", note)
     console.print(table)
     console.print()
 
@@ -196,6 +198,94 @@ def _read_candidates(path: str):
     return read_candidates_tsv(path)
 
 
+def _get_config(ctx: click.Context | None = None) -> dict:
+    """Return the resolved TOML config dict (cached on the Click context).
+
+    Safe to call from any subcommand: if no config file is present the result
+    is an empty dict, so ``cfg.get("section", {}).get("key", fallback)`` works
+    without special-casing.
+    """
+    path: str | None = None
+    if ctx is not None:
+        obj = ctx.obj or {}
+        if "config_cache" in obj:
+            return obj["config_cache"]
+        path = obj.get("config_path")
+    from .config import get_config
+    try:
+        cfg = get_config(path)
+    except ValueError as exc:
+        console.print(f"[warning]⚠[/warning] {exc}", style="warning")
+        cfg = {}
+    if ctx is not None:
+        ctx.ensure_object(dict)
+        ctx.obj["config_cache"] = cfg
+    return cfg
+
+
+def _cfg_value(ctx: click.Context | None, section: str, key: str, fallback=None):
+    """Look up ``[section] key`` in the TOML config, or return *fallback*."""
+    return _get_config(ctx).get(section, {}).get(key, fallback)
+
+
+def _apply_annotations(
+    candidates: list,
+    annotate_dir: str,
+    *,
+    quiet: bool = False,
+) -> None:
+    """Auto-detect reference files in *annotate_dir* and attach annotations.
+
+    Recognised filenames (any subset): ``genes.gtf[.gz]``, ``peaks.bed[.gz]``,
+    ``dbsnp.vcf.gz``. Missing files are silently skipped.
+    """
+    from pathlib import Path as _Path
+
+    from .annotation import annotate_variants
+
+    d = _Path(annotate_dir)
+    gtf = next((p for p in (d / "genes.gtf", d / "genes.gtf.gz") if p.is_file()), None)
+    bed = next((p for p in (d / "peaks.bed", d / "peaks.bed.gz") if p.is_file()), None)
+    dbsnp = d / "dbsnp.vcf.gz" if (d / "dbsnp.vcf.gz").is_file() else None
+
+    if gtf is None and bed is None and dbsnp is None:
+        if not quiet:
+            console.print(
+                f"  [warning]⚠[/warning] --annotate dir {d} has no "
+                f"genes.gtf(.gz), peaks.bed(.gz), or dbsnp.vcf.gz; skipping.",
+                style="warning",
+            )
+        return
+
+    if not quiet:
+        found = [p.name for p in (gtf, bed, dbsnp) if p is not None]
+        console.print(f"  Annotating with: {', '.join(found)}")
+
+    try:
+        annotate_variants(
+            candidates,
+            gtf_path=gtf,
+            bed_path=bed,
+            dbsnp_vcf_path=dbsnp,
+        )
+        annotated = sum(1 for c in candidates if _ann_note(c.vcf_id))
+        if not quiet:
+            console.print(
+                f"  [success]✓[/success] Annotated "
+                f"[bold]{annotated}/{len(candidates)}[/bold] variant(s)."
+            )
+    except ImportError as exc:
+        if not quiet:
+            console.print(f"  [warning]⚠[/warning] {exc}", style="warning")
+
+
+def _ann_note(vcf_id: str) -> str:
+    """Return the annotation snippet for *vcf_id*, or "" if unannotated."""
+    from .annotation import get_annotation
+    ann = get_annotation(vcf_id)
+    return ann.to_note() if ann is not None else ""
+
+
 def _parse_assays(raw: str | None) -> list[str] | None:
     """Parse the --assays CLI value.
 
@@ -212,14 +302,105 @@ def _parse_assays(raw: str | None) -> list[str] | None:
     return [a.strip() for a in stripped.split(",") if a.strip()]
 
 
+def _serialize_messages(messages: list[dict]) -> list[dict]:
+    """Convert chat message history to JSON-safe dicts.
+
+    OpenAI message objects (tool_calls, function) get dumped via pydantic's
+    ``model_dump``; plain dicts pass through untouched.
+    """
+    out: list[dict] = []
+    for m in messages:
+        if hasattr(m, "model_dump"):
+            try:
+                out.append(m.model_dump(exclude_unset=True))
+                continue
+            except Exception:
+                pass
+        if hasattr(m, "dict"):
+            try:
+                out.append(m.dict(exclude_unset=True))
+                continue
+            except Exception:
+                pass
+        out.append(dict(m))
+    return out
+
+
+def _save_session(messages: list[dict], path: Path) -> None:
+    """Persist message history to JSON."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps({"messages": _serialize_messages(messages)}, indent=2, default=str),
+        encoding="utf-8",
+    )
+
+
+def _load_session(path: Path) -> list[dict]:
+    """Load message history from a JSON session file."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if "messages" not in data:
+        raise ValueError(f"{path}: session file must contain a 'messages' list")
+    msgs = data["messages"]
+    if not isinstance(msgs, list):
+        raise ValueError(f"{path}: session file 'messages' must be a list")
+    return [dict(m) for m in msgs]
+
+
+def _render_conversation_markdown(messages: list[dict]) -> str:
+    """Render the conversation history as a markdown transcript."""
+    lines = ["# Agent Chat Session", ""]
+    for m in messages:
+        if hasattr(m, "model_dump"):
+            try:
+                m = m.model_dump(exclude_unset=True)
+            except Exception:
+                m = dict(m)
+        role = m.get("role", "unknown")
+        content = m.get("content") or ""
+        if role == "system":
+            lines.append("## System\n")
+            lines.append(str(content))
+            lines.append("")
+        elif role == "user":
+            lines.append("## User\n")
+            lines.append(str(content))
+            lines.append("")
+        elif role == "assistant":
+            lines.append("## Assistant\n")
+            if content:
+                lines.append(str(content))
+            tool_calls = m.get("tool_calls") or []
+            for tc in tool_calls:
+                fn = tc.get("function", {}) if isinstance(tc, dict) else {}
+                name = fn.get("name", "?")
+                args = fn.get("arguments", "{}")
+                lines.append(f"\n*tool call:* `{name}({args})`\n")
+            lines.append("")
+        elif role == "tool":
+            name = m.get("name", m.get("tool_call_id", "tool"))
+            lines.append(f"### tool result ({name})\n")
+            lines.append(f"```\n{content}\n```")
+            lines.append("")
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------------------
 # Root group
 # ---------------------------------------------------------------------------
 
 @click.group(invoke_without_command=True)
+@click.option(
+    "--config",
+    "config_path",
+    type=click.Path(dir_okay=False),
+    default=None,
+    envvar="REGVAR_CONFIG",
+    help="Path to a TOML config file (default: ./regvar.toml or "
+         "~/.config/regvar/config.toml).",
+)
 @click.pass_context
 @click.version_option(version="0.1.0", prog_name="regvar")
-def cli(ctx: click.Context) -> None:
+def cli(ctx: click.Context, config_path: str | None) -> None:
     """regvar — AlphaGenome-powered regulatory variant triage.
 
     Score candidate non-coding variants with AlphaGenome and triage them
@@ -232,6 +413,53 @@ def cli(ctx: click.Context) -> None:
         regvar plot effects chr8 127401060 G T --output effects.png
         regvar assays
     """
+    ctx.ensure_object(dict)
+    ctx.obj["config_path"] = config_path
+    # Populate Click's default_map from TOML so omitted CLI flags fall back to
+    # config values. Click auto-propagates nested sections (e.g. agent.run)
+    # when the top-level map contains a group name. Top-level [defaults] values
+    # must be duplicated into every leaf subcommand entry to actually reach
+    # them — Click does NOT cascade defaults across nesting.
+    try:
+        cfg = _get_config(ctx)
+    except Exception:
+        cfg = {}
+    if cfg and not ctx.default_map:
+        defaults = dict(cfg.get("defaults", {}))
+        shared = {k.replace("-", "_"): v for k, v in defaults.items()}
+        top_map: dict = {}
+
+        # Per-subcommand sections: [score], [plot_effects], [agent_run], etc.
+        subcommand_entries = {
+            "score":        (None,   "score"),
+            "plot_effects": ("plot", "effects"),
+            "agent_run":    ("agent", "run"),
+            "agent_chat":   ("agent", "chat"),
+        }
+        for section_name, (parent_group, cmd_name) in subcommand_entries.items():
+            section = cfg.get(section_name, {})
+            if not section and not shared:
+                continue
+            merged = dict(shared)
+            merged.update({k.replace("-", "_"): v for k, v in section.items()})
+            if parent_group is None:
+                top_map[cmd_name] = merged
+            else:
+                top_map.setdefault(parent_group, {})[cmd_name] = merged
+
+        # Also accept [agent.run] / [agent.chat] TOML sections directly.
+        agent_section = cfg.get("agent", {})
+        if isinstance(agent_section, dict):
+            for sub in ("run", "chat"):
+                sub_cfg = agent_section.get(sub, {})
+                if isinstance(sub_cfg, dict) and sub_cfg:
+                    merged = dict(shared)
+                    existing = top_map.get("agent", {}).get(sub, {})
+                    merged.update(existing)
+                    merged.update({k.replace("-", "_"): v for k, v in sub_cfg.items()})
+                    top_map.setdefault("agent", {})[sub] = merged
+
+        ctx.default_map = top_map
     if ctx.invoked_subcommand is None:
         _banner()
         click.echo(ctx.get_help())
@@ -603,6 +831,21 @@ def agent() -> None:
     default=False,
     help="Proceed even when the variant count exceeds the safety limit.",
 )
+@click.option(
+    "--max-concurrent",
+    type=int,
+    default=None,
+    help="Parallel scoring workers. Overrides [defaults] max_concurrent in config. "
+         "Default (1) runs serially; higher values dispatch via a thread pool.",
+)
+@click.option(
+    "--annotate",
+    type=click.Path(exists=True, file_okay=False),
+    default=None,
+    help="Directory with reference files for variant annotation: genes.gtf(.gz), "
+         "peaks.bed(.gz), dbsnp.vcf.gz. Any subset is accepted; annotations are "
+         "appended to the agent's system prompt as context per variant.",
+)
 def agent_run(
     candidates_tsv: str,
     assays: str | None,
@@ -616,6 +859,8 @@ def agent_run(
     verbose: bool,
     quiet: bool,
     force: bool,
+    max_concurrent: int | None,
+    annotate: str | None,
 ) -> None:
     """Run the agent to triage candidate regulatory variants.
 
@@ -629,6 +874,7 @@ def agent_run(
         regvar agent run gwas_hits.vcf.gz --dry-run
         regvar agent run examples/candidate_variants.tsv -o report.md --output-tsv scores.tsv
         regvar agent run examples/candidate_variants.tsv --output-json results.json
+        regvar agent run examples/candidate_variants.tsv --max-concurrent 4
     """
     _run_agent_core(
         candidates_tsv=candidates_tsv,
@@ -643,6 +889,8 @@ def agent_run(
         verbose=verbose,
         quiet=quiet,
         force=force,
+        max_concurrent=max_concurrent,
+        annotate=annotate,
     )
 
 
@@ -670,11 +918,40 @@ def agent_run(
     show_default=True,
     help="Default top-N effects to return per scoring call.",
 )
+@click.option(
+    "-o", "--output",
+    type=click.Path(dir_okay=False),
+    default=None,
+    help="On exit, save the full conversation transcript as markdown.",
+)
+@click.option(
+    "--reasoning-effort",
+    type=click.Choice(["low", "medium", "high", "off"], case_sensitive=False),
+    default="high",
+    show_default=True,
+    help="Reasoning effort level for the model. 'off' disables extended thinking.",
+)
+@click.option(
+    "--save-session",
+    type=click.Path(dir_okay=False),
+    default=None,
+    help="Save the message history as JSON on exit (for --load-session).",
+)
+@click.option(
+    "--load-session",
+    type=click.Path(exists=True, dir_okay=False),
+    default=None,
+    help="Resume a previously saved JSON session (appends to existing history).",
+)
 def agent_chat(
     model: str,
     assays: str | None,
     tissue: str | None,
     top_n: int,
+    output: str | None,
+    reasoning_effort: str,
+    save_session: str | None,
+    load_session: str | None,
 ) -> None:
     """Interactive REPL — ask the agent questions in plain English.
 
@@ -686,6 +963,8 @@ def agent_chat(
     Examples:
         regvar agent chat
         regvar agent chat --tissue UBERON:0002367 --top-n 15
+        regvar agent chat --reasoning-effort low --save-session chat.json
+        regvar agent chat --load-session chat.json --output transcript.md
     """
     _banner()
     console.print(
@@ -721,6 +1000,22 @@ def agent_chat(
 
     system_prompt = _build_system_prompt(assay_list, tissue_list, top_n)
     messages: list[dict] = [{"role": "system", "content": system_prompt}]
+
+    if load_session:
+        try:
+            prior = _load_session(Path(load_session))
+            # Keep current system prompt authoritative; skip any prior system msg.
+            messages.extend(m for m in prior if m.get("role") != "system")
+            console.print(
+                f"  [success]✓[/success] Resumed session from [bold]{load_session}[/bold] "
+                f"([dim]{len(prior)} message(s)[/dim])"
+            )
+        except (ValueError, json.JSONDecodeError, OSError) as exc:
+            console.print(f"[error]Error loading session:[/error] {exc}")
+            raise SystemExit(1) from exc
+
+    effort = None if reasoning_effort.lower() == "off" else reasoning_effort.lower()
+
     client = OpenAI(
         api_key=os.environ["DEEPSEEK_API_KEY"],
         base_url=DEEPSEEK_BASE_URL,
@@ -756,7 +1051,7 @@ def agent_chat(
                     model=model,
                     tools=OPENAI_TOOL_SCHEMAS,
                     max_tokens=4096,
-                    reasoning_effort=None,
+                    reasoning_effort=effort,
                     max_turns=MAX_TURNS,
                 )
 
@@ -769,6 +1064,15 @@ def agent_chat(
 
     except KeyboardInterrupt:
         console.print("\n  [dim]Session ended.[/dim]")
+    finally:
+        if output:
+            md = _render_conversation_markdown(messages)
+            _save_markdown(md, Path(output))
+        if save_session:
+            _save_session(messages, Path(save_session))
+            console.print(
+                f"  [success]✓[/success] Session saved to [bold]{save_session}[/bold]"
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -789,15 +1093,25 @@ def _run_agent_core(
     verbose: bool,
     quiet: bool,
     force: bool = False,
+    max_concurrent: int | None = None,
+    annotate: str | None = None,
 ) -> None:
     if not quiet:
         _banner()
+
+    # Apply parallelism override to the shared client singleton, if given.
+    if max_concurrent is not None:
+        from .tools import get_client
+        get_client().config.max_concurrent = max(max_concurrent, 1)
 
     try:
         candidates = _read_candidates(candidates_tsv)
     except (ValueError, FileNotFoundError) as exc:
         console.print(f"[error]Error:[/error] {exc}")
         raise SystemExit(1) from exc
+
+    if annotate:
+        _apply_annotations(candidates, annotate, quiet=quiet)
 
     if not quiet:
         console.print(
@@ -829,6 +1143,8 @@ def _run_agent_core(
             console.print(f"  Tissue terms: {', '.join(tissue_list)}")
         console.print(f"  Top N: {top_n}")
         console.print(f"  Model: {model}")
+        if max_concurrent is not None:
+            console.print(f"  Max concurrent: {max_concurrent}")
         console.print()
         console.print("[success]Input validated. Ready to run.[/success]")
         return
@@ -1590,6 +1906,7 @@ def tui() -> None:
 @click.option("-v", "--verbose",     is_flag=True, default=False)
 @click.option("-q", "--quiet",       is_flag=True, default=False)
 @click.option("--force",             is_flag=True, default=False)
+@click.option("--max-concurrent",    type=int, default=None)
 def run(
     candidates_tsv: str,
     assays: str | None,
@@ -1603,6 +1920,7 @@ def run(
     verbose: bool,
     quiet: bool,
     force: bool,
+    max_concurrent: int | None,
 ) -> None:
     """[Alias] Run the agent triage loop — same as 'regvar agent run'.
 
@@ -1625,6 +1943,7 @@ def run(
         verbose=verbose,
         quiet=quiet,
         force=force,
+        max_concurrent=max_concurrent,
     )
 
 
