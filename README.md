@@ -33,7 +33,7 @@ flowchart TD
 
     %% ── Input ───────────────────────────────────────────────────────────────
     A([🧬 candidate_variants.tsv\nor .vcf / .vcf.gz]):::input --> ANN
-    CFG([⚙️ regvar.toml]):::config -->|defaults\nassays · tissue\nmodel · top_n| AGENT
+    CFG([⚙️ regvar.toml]):::config -->|defaults\nassays · tissue\nmodel · top_n| B
 
     %% ── Annotation layer ──────────────────────────────────────────────────
     subgraph Annotation["📖  Annotation  ·  regvar/annotation.py"]
@@ -60,7 +60,7 @@ flowchart TD
 
     %% ── Client layer ────────────────────────────────────────────────────────
     subgraph Client["⚙️  AlphaGenome Client  ·  regvar/alphagenome_client.py"]
-        G[score_variant / score_variants\n(ThreadPoolExecutor + Semaphore)]:::clientNode
+        G["score_variant / score_variants<br/>(ThreadPoolExecutor + Semaphore)"]:::clientNode
         G --> I{Cache hit?\nparquet or pkl}:::decision
         I -- yes --> K[Return cached DataFrame]:::clientNode
         I -- no  --> J[Throttle + retry\nexponential backoff]:::clientNode
