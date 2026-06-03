@@ -1,0 +1,5 @@
+experiment	metric	value
+Sample-level	n_samples	503
+Sample-level	n_factors	6
+SNP-level	n_snps	88
+SNP-level	n_factors	3

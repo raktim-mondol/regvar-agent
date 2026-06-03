@@ -1,0 +1,157 @@
+file_id	file_name	case_id	sample_id	sample_type
+abb04117-9caf-4882-a8fc-80450bdc9446	3904bb4b-ef66-45fc-8030-c7e3a4daf22b.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7123	TCGA-EJ-7123-11A	Solid Tissue Normal
+21e42b51-03fd-4ca7-bd14-7fa4a90d15a1	927948e6-ee98-4efc-a1b9-8c066a576bd3.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8259	TCGA-HC-8259-11A	Solid Tissue Normal
+ad30d409-9b81-469f-8447-99a50dfcd1de	2216e9dc-c605-411c-9faa-dfe327bfd930.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7321	TCGA-EJ-7321-11A	Solid Tissue Normal
+f5930cdc-dff6-4a0c-a9b4-c92159863efb	e25f52c4-7269-481c-8362-ff0d8547ffcb.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6342	TCGA-G9-6342-11A	Solid Tissue Normal
+bd12658b-f921-4492-bf17-f2d277c51374	ad47466a-021d-4c58-85cb-00545bd9b9c8.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7783	TCGA-EJ-7783-11A	Solid Tissue Normal
+57cbed7b-24d1-4704-b613-7539260edcfe	449f289b-d345-4b65-bfe1-ed0aaae0c083.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7328	TCGA-EJ-7328-11A	Solid Tissue Normal
+677534b8-e9e9-421c-94d3-f50571c355f4	eed6ab73-90a3-4b63-9d82-8ae99f60c92d.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7330	TCGA-EJ-7330-11A	Solid Tissue Normal
+578187d6-1510-4c26-ac25-b1df3183f502	b1467d5b-e034-4eb3-920f-fc6256ec3ce7.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7314	TCGA-EJ-7314-11A	Solid Tissue Normal
+1ee06261-6298-41fa-a253-145d457772e1	809e643c-4d9a-49e9-b158-35104ae7187f.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6348	TCGA-G9-6348-11A	Solid Tissue Normal
+dfe13b04-645b-488e-baf5-1f78fea3df8f	92da2574-dc19-403e-b364-95a41a0bdeba.rna_seq.augmented_star_gene_counts.tsv	TCGA-J4-A83J	TCGA-J4-A83J-11A	Solid Tissue Normal
+84a81bac-6f26-4787-b7a6-8abab21ef7eb	b05e342c-7c99-4ce4-8f5c-19dc88bc516a.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7786	TCGA-EJ-7786-11A	Solid Tissue Normal
+cf9da75a-2cd7-4ac3-971c-48000803d0e7	d847d087-8da7-438a-9073-fa247cda1981.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6384	TCGA-G9-6384-11A	Solid Tissue Normal
+a0911555-5095-463b-8d22-cb236576e6f6	ddc040fb-0f77-4683-8d72-e38208361e4e.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5769	TCGA-CH-5769-11A	Solid Tissue Normal
+e816de3b-fae9-4081-ba8e-a4b9d0c6e046	ba632c2b-9b5a-434b-967a-863d3516fe24.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7794	TCGA-EJ-7794-11A	Solid Tissue Normal
+1db84a0e-7ed1-423a-918e-23ac556360df	45950878-b6ec-4fcd-b4d4-fb7f6cde5a63.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7331	TCGA-EJ-7331-11A	Solid Tissue Normal
+8a3152f5-82ae-45fd-a47c-16faef15c86d	e3c5a10a-81cf-459b-82f5-0448d8f1665d.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6363	TCGA-G9-6363-11A	Solid Tissue Normal
+8a3d6d97-cbdf-41ce-acc0-28248199cbab	2d6e0234-f5e1-435d-87c3-cbe59f481994.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6499	TCGA-G9-6499-11A	Solid Tissue Normal
+2354013f-1b41-4e7b-8756-5697fa8757fd	267d31a0-a45b-4404-88c4-fe6a0f11aa3a.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8260	TCGA-HC-8260-11A	Solid Tissue Normal
+61fb3d31-24d9-45ad-a3ee-7959fdafcd26	22200e14-44e6-4660-9289-62ad3db1df7b.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-A8FO	TCGA-EJ-A8FO-11A	Solid Tissue Normal
+418d89ca-5818-48b5-8aae-9346dd96af2d	1c6e4a49-5f6a-4987-b79e-ebef96ba4cee.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7782	TCGA-EJ-7782-11A	Solid Tissue Normal
+ec6a7813-382a-40f4-add7-b51329b43b45	a20170ce-5dd8-47e4-bdba-741cf08a1144.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7785	TCGA-EJ-7785-11A	Solid Tissue Normal
+88e4e48c-b3f2-43a1-b25b-c9cc254fd0b6	a3320ee3-e016-49c7-bbba-395240538ff7.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7781	TCGA-EJ-7781-11A	Solid Tissue Normal
+8f1b4d8a-4845-4774-9fc2-0a459303bef8	2c022016-756e-4cbf-9baa-dab196b6e715.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7784	TCGA-EJ-7784-11A	Solid Tissue Normal
+7e37fa46-f809-4e8a-8a5e-a8b220d4e5c1	bcfc334c-55ef-424c-aa8a-1be56dde1dc7.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7317	TCGA-EJ-7317-11A	Solid Tissue Normal
+a149b835-a3bb-43d8-8b40-3a84bcf46e89	97a3dddc-9e26-4b4e-9eec-e881c3c15c5f.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5761	TCGA-CH-5761-11A	Solid Tissue Normal
+76d4a24e-56c2-4ac0-97d6-1a7ddc8f286f	7d163b13-0e81-4f37-b276-32b889834157.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7752	TCGA-HC-7752-11A	Solid Tissue Normal
+ae0dd2a4-d531-4fee-b5ff-567b9e70e8ec	4c6678c0-7bf8-418d-a1ee-83b6b73d0217.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7125	TCGA-EJ-7125-11A	Solid Tissue Normal
+8207dbc1-61c6-4f2d-b92c-a43d495091a6	3cfa67c8-c49a-48ac-aa3b-b8dcd3011e48.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7793	TCGA-EJ-7793-11A	Solid Tissue Normal
+2f6ca933-3daf-41dc-9403-880fa45ef36c	60028d9d-c8e5-4c4e-a75c-cc3df6f2eea1.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7327	TCGA-EJ-7327-11A	Solid Tissue Normal
+207a5cf3-061a-4766-b857-99b807de2649	7f718fea-427e-49d8-bf98-6b18439e093e.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5768	TCGA-CH-5768-11A	Solid Tissue Normal
+68caa1a5-bea8-4191-b96b-92d6adab99eb	67415aab-0b1b-4b52-bdc7-c1240de53a40.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7797	TCGA-EJ-7797-11A	Solid Tissue Normal
+553daef5-9cde-42f2-a921-f7f90d087886	ff2ba139-f4fb-43a7-8f9d-4a33c94e0381.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7211	TCGA-HC-7211-11A	Solid Tissue Normal
+a47f3dac-45bb-4f7d-ad28-a7ead099891e	7e380de8-cb1a-4490-8f30-7a235887cb75.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6351	TCGA-G9-6351-11A	Solid Tissue Normal
+45dfb0ee-7d53-4bd8-b1d0-4a0a3275e4b5	64dc3324-0550-432b-8237-cee3ca6aa392.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8258	TCGA-HC-8258-11A	Solid Tissue Normal
+508f82a6-c6c1-4452-851c-2e77f4799601	56145606-4305-4b32-a357-00d3f852dd0a.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7742	TCGA-HC-7742-11A	Solid Tissue Normal
+9ffd93f3-b429-4876-a145-964cb53b0ae0	6a48a923-7683-4f65-b3e6-d2b06b501bd6.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6356	TCGA-G9-6356-11A	Solid Tissue Normal
+1f4a9a3f-ceff-4065-93c6-7f59f24c8ddf	aac3107c-0c3c-4912-92bc-dfe53fbbac9e.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7789	TCGA-EJ-7789-11A	Solid Tissue Normal
+b9613f09-0db2-4409-bb9d-9f484d7267a2	54d010fb-a242-4e4c-bee0-ee67697da801.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7792	TCGA-EJ-7792-11A	Solid Tissue Normal
+95f0ecc5-a02f-4426-8a55-4def0758e267	c6b20bb4-cb04-4a59-8b66-211b787f8950.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7315	TCGA-EJ-7315-11A	Solid Tissue Normal
+db540696-d1c7-4853-817b-8f7b0714aa5e	ae453e2d-6a82-49b7-87ef-5835389c70ff.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7115	TCGA-EJ-7115-11A	Solid Tissue Normal
+d6963724-bd05-4898-a925-9e047309e226	a8d710c8-d021-4258-a6cc-9948ceaa2486.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6333	TCGA-G9-6333-11A	Solid Tissue Normal
+83bc9228-d1e5-4985-b37c-3d97232f2669	ef70adbb-5a94-4c64-92cf-0d368766f8d0.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7745	TCGA-HC-7745-11A	Solid Tissue Normal
+5190374f-ea8a-43a3-b443-79fac4506a48	79ce3814-2843-44c3-9abb-ec353ecc4f01.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6365	TCGA-G9-6365-11A	Solid Tissue Normal
+10ac475b-ebab-4164-abd5-0c53bdf5c558	422d5778-bfe0-4e2f-b254-2a753c777686.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7738	TCGA-HC-7738-11A	Solid Tissue Normal
+0427d696-a33d-4005-ac1d-c5363754226e	b1becd71-bbed-4a0f-af9c-94b9b2af928b.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7737	TCGA-HC-7737-11A	Solid Tissue Normal
+f33f57c5-fbb8-4d9c-8ae4-9800ef8b35f8	027797bd-4b87-414c-953e-7f3a23dbe16e.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5767	TCGA-CH-5767-11B	Solid Tissue Normal
+a82b0819-225b-4aa8-bb97-3cbd4873bc54	9975ae8f-09f2-4343-9281-cbe13c775dca.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7740	TCGA-HC-7740-11A	Solid Tissue Normal
+3a643e32-8ece-4e7f-93a0-9fab9c33ddd3	53cba562-6d13-4c88-b13d-39a2a600fc2e.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6496	TCGA-G9-6496-11A	Solid Tissue Normal
+e07ed349-c219-4b46-b7b8-30c672f84f6e	36686dd6-2f3e-4950-9fbb-d1952d3bd5fd.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7819	TCGA-HC-7819-11A	Solid Tissue Normal
+509fc559-6750-46e0-881d-71a4a313d270	2cacbe10-481e-42d7-8b01-5ad9537ed2c1.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6362	TCGA-G9-6362-11A	Solid Tissue Normal
+656e67f9-b280-480b-a7a5-444ddf979027	998581d3-8fdc-4f4a-92cd-d98fc0f910bc.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7747	TCGA-HC-7747-11A	Solid Tissue Normal
+29d3f44a-ce3c-4162-9c5b-c62eff90bd91	673ef155-1bba-466d-92b4-cecb4121946e.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8262	TCGA-HC-8262-11A	Solid Tissue Normal
+447ee125-2322-47df-b160-c3ab45be023e	9981297a-947f-44b0-bbb7-e16b7045c608.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7123	TCGA-EJ-7123-01A	Primary Tumor
+b1e5ac31-428f-43aa-bb4e-feafd39a317c	07aa3728-fdc1-40e5-bd97-b9eb055e47e2.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-A8FO	TCGA-EJ-A8FO-01A	Primary Tumor
+3c068b3c-6de7-4be1-9fcf-3aaebf260652	0b9f0386-8654-4cfc-85af-da5eb0dbbcd0.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6342	TCGA-G9-6342-01A	Primary Tumor
+352aae7f-f08f-42e4-b49c-86529fbe622a	9c77256c-e9e7-49fd-992d-bf1df85d2a63.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7792	TCGA-EJ-7792-01A	Primary Tumor
+5cb083a8-6c2c-447e-8842-57823c5d5529	15b903cc-587c-4e85-96d7-c699e525601d.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7315	TCGA-EJ-7315-01A	Primary Tumor
+33567878-1c38-4db6-a079-65e20107d5e1	ba9a239e-08e7-4554-87b0-beddfb00ecd9.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7740	TCGA-HC-7740-01B	Primary Tumor
+19c2cf7d-b0e6-45a8-aaae-ea679ee34f2e	ec2fe02e-4141-42fc-8cda-3ca0497cc9dc.rna_seq.augmented_star_gene_counts.tsv	TCGA-J4-A83J	TCGA-J4-A83J-01A	Primary Tumor
+5834d2d7-4c93-4760-bf63-65a6dc17410e	069364e3-6833-407a-b86b-46d055afc10a.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7786	TCGA-EJ-7786-01A	Primary Tumor
+dfa0ff6f-bcc8-440f-b9a5-c8e24e0f8f4a	7ca13770-549b-48a0-97aa-7af7cb709997.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7794	TCGA-EJ-7794-01A	Primary Tumor
+d4071c30-e83b-4457-a689-5d3f540529d4	7e4416dd-d962-4838-8b85-641270b6b10a.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6496	TCGA-G9-6496-01A	Primary Tumor
+7fdc3295-81f3-4cfe-9a71-ec28cf13ee8f	34d1151a-2725-4259-a1d1-2b0027c65b45.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8258	TCGA-HC-8258-01B	Primary Tumor
+b536d7bd-ac15-4be6-9a01-5df563464879	f87a03c9-e231-4a90-87b3-f234bceff50d.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7742	TCGA-HC-7742-01A	Primary Tumor
+94893645-c3b9-4cac-a27e-4c120742e18b	f15f5612-a9b1-47f7-9296-707fb60f395e.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7328	TCGA-EJ-7328-01A	Primary Tumor
+06d4e72e-c4bb-45be-8a1b-c5c171f0df1d	9fa77b4e-724d-4551-9418-3993bd28565e.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7784	TCGA-EJ-7784-01A	Primary Tumor
+a2dc911b-65d3-471e-807e-83ac0be20042	6eb8366a-7861-4ab9-a5c6-7f576e11a9ca.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7745	TCGA-HC-7745-01A	Primary Tumor
+325d3955-791a-4254-9fdb-6be83f3eb1af	1aa83ee2-efa2-4e0b-b8ca-a0d6238e44b6.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7738	TCGA-HC-7738-01A	Primary Tumor
+45aa72b6-399c-4c73-ae83-518148043a4b	d8fdbb83-72e8-45e4-b7aa-be798aa450c7.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6365	TCGA-G9-6365-01A	Primary Tumor
+e9d0c27d-5e43-483f-99af-379021c280d6	f988be8d-8a9f-44ae-9889-e2d8b7856f2d.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7330	TCGA-EJ-7330-01A	Primary Tumor
+11ef7a70-afe8-4882-a705-20623aa0b3fb	3ca55cbb-f5ea-48b3-9f4e-86676042660c.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5767	TCGA-CH-5767-01A	Primary Tumor
+20fe34de-d7c4-4af6-8dae-b3998204e108	9f3fbf9b-8a8f-435e-9d9b-902738d9e308.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7752	TCGA-HC-7752-01A	Primary Tumor
+ef9fb7bf-d47a-489a-ae30-eb58640c2f9f	706165b8-69be-4666-940f-52c044f163e5.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6384	TCGA-G9-6384-01A	Primary Tumor
+70fb2f55-a31a-4074-b1fe-bf38968e8654	fd634fc1-ecd0-4e31-8410-64f0a26fb050.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5769	TCGA-CH-5769-01A	Primary Tumor
+cc044407-96e8-4f0d-95e1-b651458893cf	328247b9-0404-48e2-8ee7-2c3afc12af6b.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6363	TCGA-G9-6363-01A	Primary Tumor
+107b0ba8-f479-42dc-a916-385b845a162c	4236c2a3-cd2d-4495-941c-a79315a7522b.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8258	TCGA-HC-8258-01A	Primary Tumor
+34d3e37e-42d8-463d-a00e-cc587890ae50	33321f4f-d814-4792-9613-b3e878f6da48.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7327	TCGA-EJ-7327-01A	Primary Tumor
+ce7345b1-bbb9-4137-bfca-a05e2b71f9b8	44352853-702a-4693-85e9-0160c40089aa.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7211	TCGA-HC-7211-01A	Primary Tumor
+6626903a-d832-472d-a5ed-a76fb4f1c6b8	24adda2b-ee91-4d2e-83fc-154ad17903f8.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7747	TCGA-HC-7747-01A	Primary Tumor
+c71c2f56-7a3c-40dd-8b7e-162a3b975cc9	0163f5ea-d08b-46db-a02e-ff5977658f6b.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6362	TCGA-G9-6362-01A	Primary Tumor
+8e66275b-3b15-4701-8cc7-a137806b87ae	3b54fd87-6631-4ae9-b303-bc14ffa51685.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6351	TCGA-G9-6351-01A	Primary Tumor
+2e7811cc-8e4d-4aa3-b8f8-9eb3e7215d94	e2bdfe73-54cb-448c-8212-8918bba38e31.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5768	TCGA-CH-5768-01A	Primary Tumor
+c1139272-e27b-4308-b3f5-09e7a5fd3589	246f3ad7-cc2b-4f27-bb9b-f30dd8a5fc96.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7797	TCGA-EJ-7797-01A	Primary Tumor
+b4d363ad-4baa-467b-a263-95607909bc8d	b24a1a07-9867-48b2-bdf0-d0a41171f867.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8259	TCGA-HC-8259-01A	Primary Tumor
+353dcb70-994f-419a-aa60-b9934fa19955	fbfe6ce2-18ca-46fc-b271-32c6b10b1981.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7793	TCGA-EJ-7793-01A	Primary Tumor
+533be652-57e3-4974-9f77-2a9b20d0cc31	06b62257-7bdf-4218-8d43-49d80f591364.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8260	TCGA-HC-8260-01A	Primary Tumor
+d80a44a8-6d81-4be0-98a0-48ccec90d4fd	2f785783-9303-4b18-9e87-0c33e65a5de9.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7782	TCGA-EJ-7782-01A	Primary Tumor
+86c770c7-028d-40fd-85f9-5b7b7821f384	6dffd8c9-848b-46ff-b72a-e30658982fdc.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7783	TCGA-EJ-7783-01A	Primary Tumor
+2ba243f8-3c22-4f42-9dff-4f4f568453bb	cf7f2ba0-bd76-4ccc-9e2c-e944adad3ca6.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6356	TCGA-G9-6356-01A	Primary Tumor
+82e9eeed-d077-4f04-b03e-cdf4d8ca219d	e32fc401-5ddd-4dfc-8be4-8d4072a080c3.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7789	TCGA-EJ-7789-01A	Primary Tumor
+3afad7ec-1243-43ef-925e-165302b4693e	caf6340c-8a9e-4814-b78e-c0b539e6b43e.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7785	TCGA-EJ-7785-01A	Primary Tumor
+81dbe674-52b1-4c88-ac98-f235ea631797	cd27b963-ad0f-4932-b41b-599dfd4b4194.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7781	TCGA-EJ-7781-01A	Primary Tumor
+aa444e19-18fb-40d7-b285-fedf296cfb44	23e41cd5-4268-4cae-8419-39c6f554587c.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7115	TCGA-EJ-7115-01A	Primary Tumor
+ac56741a-daa1-409e-836d-631b99fe2d69	f81292b4-23cb-4ea1-a83b-27e84a2cafd5.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6499	TCGA-G9-6499-01A	Primary Tumor
+00d6b6a9-179f-4b2a-826f-f8326197b17d	9c56eacc-c71b-48b5-8747-008fd1105f89.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7321	TCGA-EJ-7321-01A	Primary Tumor
+33b09c46-e744-41d1-bcd9-a652f466ffe9	2ab5ec76-c5d6-46c0-903c-776848afd2cb.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6333	TCGA-G9-6333-01A	Primary Tumor
+c9c57b6a-1a65-4384-8f78-23726803fd14	4aeac737-0156-44fe-a034-664c3d1dfed4.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7317	TCGA-EJ-7317-01A	Primary Tumor
+c93d2241-ec80-424a-871a-0e2a8b6f4043	77d92416-bd2e-4224-bcb7-40ac1258218e.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7737	TCGA-HC-7737-01A	Primary Tumor
+fded7159-92d4-4aaf-b06b-1169cabdc1fa	9493a088-7cc8-4d7f-ad8b-946b9b9c4a2b.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5761	TCGA-CH-5761-01A	Primary Tumor
+9b20a127-f218-4152-8ba9-bec6fd3f40d6	4e210408-b5e7-4f57-a790-13cb4ef12a56.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7314	TCGA-EJ-7314-01A	Primary Tumor
+c43feeba-ba0e-4b05-9da0-dc38fb1cc85f	6664e792-b8d8-43d1-ba34-be969e4fd0d4.rna_seq.augmented_star_gene_counts.tsv	TCGA-G9-6348	TCGA-G9-6348-01A	Primary Tumor
+a01b7ba6-acd9-40cb-8359-c6565714cdab	d1338761-2196-4fd3-8b50-f2efb8a3f850.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7740	TCGA-HC-7740-01A	Primary Tumor
+24da5615-dd26-4171-97c3-4216251af862	659ebc1e-2b97-4800-8166-749e93085d2d.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7125	TCGA-EJ-7125-01A	Primary Tumor
+44c71a14-39ef-4616-84ca-ea5494f270aa	505af425-08b6-4c45-bf13-97de304e2b2f.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-7331	TCGA-EJ-7331-01A	Primary Tumor
+da724edb-9a7d-499f-a0b2-1036ff37cde5	41317cbf-55ed-4118-9964-b4b17bc89848.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-7819	TCGA-HC-7819-01A	Primary Tumor
+27a0dcf2-bf9e-4dd3-b0d1-2dcfc67e69ba	1782c608-e7e6-4413-8d87-660979f32485.rna_seq.augmented_star_gene_counts.tsv	TCGA-HC-8262	TCGA-HC-8262-01A	Primary Tumor
+debe3ce9-e624-4b74-a06f-b4e0663a970c	d1a95416-db18-4289-9562-9b9e304bf4c8.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8VL	TCGA-2A-A8VL-01A	Primary Tumor
+1f6b1941-b72a-4446-95c0-a6878c861d20	ddf5f6f4-dbba-4262-b2db-cfda13f2afcc.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8VO	TCGA-2A-A8VO-01A	Primary Tumor
+fdd15293-db3d-4a02-8f76-52e6f7c0cd98	1f3cabd7-c794-4083-a010-bc828e82608f.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8VT	TCGA-2A-A8VT-01A	Primary Tumor
+760c15df-2435-4ef0-a0e0-d9725c59b4f6	aad6f07f-9f3b-4a6f-a82b-4e3e3cf1d941.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8VV	TCGA-2A-A8VV-01A	Primary Tumor
+abe08f86-11c0-4485-8cb1-db31ce8d1aeb	7058afac-43e6-41e5-aae1-b2fca82a2e27.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8VX	TCGA-2A-A8VX-01A	Primary Tumor
+ac66365d-531f-4e36-8ceb-63da59bef304	4dfdbbfc-cebd-4354-b04f-898f37bf38ac.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8W1	TCGA-2A-A8W1-01A	Primary Tumor
+b319a480-2090-40f3-bda5-3f5e807e0637	c257f57f-dbbf-46bf-9163-2496e7ca80d3.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-A8W3	TCGA-2A-A8W3-01A	Primary Tumor
+417ea894-5711-468e-a562-690118fc003c	5e7107c9-8f25-4a74-8c60-47a0694bbfc1.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-AAYF	TCGA-2A-AAYF-01A	Primary Tumor
+3992f071-7ea6-4ec8-b826-b0640d39b68d	f82eeb29-a6ca-48b8-9d60-6b332ce0cca0.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-AAYO	TCGA-2A-AAYO-01A	Primary Tumor
+1a6126f3-97a5-48ac-803a-0c4377d21cf6	702bedee-8f97-47b7-9c41-f7abb68fba02.rna_seq.augmented_star_gene_counts.tsv	TCGA-2A-AAYU	TCGA-2A-AAYU-01A	Primary Tumor
+a0cd2ce2-8d8e-4d51-a8b3-14bd99e9fe5e	856282a0-da53-4ffe-9f0b-b5d18ee49523.rna_seq.augmented_star_gene_counts.tsv	TCGA-4L-AA1F	TCGA-4L-AA1F-01A	Primary Tumor
+10e760a6-6410-4f2f-acdd-1cff022dfda9	cbab180a-e19b-44d2-8c37-c221c3fb5775.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5737	TCGA-CH-5737-01A	Primary Tumor
+72bc90dc-785e-40a0-9c4f-4c6b4d3dd6fa	bcd6088c-93ef-4dd0-8da4-b58a2daa27c3.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5738	TCGA-CH-5738-01A	Primary Tumor
+f3910669-3741-4120-8245-56d7353550a2	5b92e9a9-44ab-4806-8c91-aff1ca6a5aa1.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5739	TCGA-CH-5739-01A	Primary Tumor
+52fa0762-2a6a-467f-8ab8-aaf136320f0d	8ebceec7-53cb-4ff6-9ecd-bac533d47117.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5740	TCGA-CH-5740-01A	Primary Tumor
+5fb96f5d-1bb4-4439-836e-842fb2560e49	7c13f1bd-dace-4c1c-95ae-348c74f2768a.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5741	TCGA-CH-5741-01A	Primary Tumor
+dee38ede-3869-4ee0-b01a-ea823d8fe3ea	c26ce529-e064-4389-9d64-36d9f6046971.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5743	TCGA-CH-5743-01A	Primary Tumor
+2e52df6b-2e33-4de4-8ae1-dca835193ce2	561b77d2-5158-44de-9711-8d6364bf67cf.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5744	TCGA-CH-5744-01A	Primary Tumor
+17606720-0f73-4145-894c-dda680498dea	a3470c00-a3fb-4538-9cfb-91c719f16e6f.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5745	TCGA-CH-5745-01A	Primary Tumor
+19687c96-30a3-4f24-ba15-2fbd1093c49f	b6387b44-c674-48e7-a05a-ace52b7b9a55.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5746	TCGA-CH-5746-01A	Primary Tumor
+86ddb3b5-ecc1-41a0-9719-4a6ffef6624d	0879b7ae-a997-4b0e-aacd-a56a02fe41d2.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5748	TCGA-CH-5748-01A	Primary Tumor
+5bf0e22b-aee2-43ef-8dad-08480a53acb4	367a6ca6-7c37-4032-b04c-e68f5b3a9ba4.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5750	TCGA-CH-5750-01A	Primary Tumor
+818519ed-b190-43b8-a065-600bf80ce572	1cd0c754-f146-4f52-89b4-7e60ebeea281.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5751	TCGA-CH-5751-01A	Primary Tumor
+f4f06841-c4df-456b-9b60-c1c40b5aa8e0	d5365384-47d2-4ee2-87cb-1ba9dde8e92c.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5752	TCGA-CH-5752-01A	Primary Tumor
+d3c51d7c-6908-4971-a3fc-ea443c8542c6	13be5783-2087-4bf6-83dc-a8516d931616.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5753	TCGA-CH-5753-01A	Primary Tumor
+25263824-33e5-45c3-82a6-8982aea21a55	94ec88ff-4332-47ec-b2bf-3b8a269860d0.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5754	TCGA-CH-5754-01A	Primary Tumor
+cecba697-85d4-4cb5-9a32-7bf3e67d8cb0	7f8dc767-80f0-490b-bdbf-6acd1f909b1f.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5762	TCGA-CH-5762-01A	Primary Tumor
+7ff08c03-ccba-41f7-b086-78f86c27c576	a704f7c5-6378-43ec-9294-8c9ce2308c5c.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5763	TCGA-CH-5763-01A	Primary Tumor
+0de94f0b-d06b-460c-aed0-c18380d4fc94	89a0abf7-c745-48a1-ab36-d70ffcaca99e.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5764	TCGA-CH-5764-01A	Primary Tumor
+59f8dfb4-05e2-4737-93fb-d35bb1f81d15	c4805f6c-2047-4d11-be88-c0c4358c2adb.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5765	TCGA-CH-5765-01A	Primary Tumor
+f6c60113-8a55-48fc-85b5-46bf99db08f8	10eecc1d-096b-4664-a001-713f19ce82f1.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5766	TCGA-CH-5766-01A	Primary Tumor
+51155a1f-fd67-46a1-a51f-e89fe4d874c4	906cf4d0-5a50-429b-b59f-1f5bddb46383.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5771	TCGA-CH-5771-01A	Primary Tumor
+dba10e27-3793-4de2-800c-008ad0a567bf	6ae6442d-6817-45c1-9ab0-f2195449bd48.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5772	TCGA-CH-5772-01A	Primary Tumor
+a6c621e7-dc5e-4014-8876-8863858832fc	54530b7d-7e21-44c3-a5ca-62ed71178b8e.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5788	TCGA-CH-5788-01A	Primary Tumor
+7357cc83-fffc-48fb-a7b6-1d1088854061	b42fe747-93c0-4232-b759-01fb998838ea.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5789	TCGA-CH-5789-01A	Primary Tumor
+bd41e0c4-f2f5-4702-b05e-f56387a643ea	94e25da6-afbe-45c8-a297-e73f023d242b.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5790	TCGA-CH-5790-01A	Primary Tumor
+cc5ef513-f9f2-4fa1-b858-a5b5c0e1ee49	bfc7b05d-55da-4c1e-99d5-605c8359cb5c.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5791	TCGA-CH-5791-01A	Primary Tumor
+8566706e-8389-44ea-a630-9286a85bfcbf	ef5f66a4-d6e5-4ac5-a4ec-5cd3f860b7ff.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5792	TCGA-CH-5792-01A	Primary Tumor
+f59de1b4-208e-46e3-9361-a8377c9581e5	3fa7a7eb-706a-48f0-a14c-e2328845a82c.rna_seq.augmented_star_gene_counts.tsv	TCGA-CH-5794	TCGA-CH-5794-01A	Primary Tumor
+a3f39b2d-3f1e-48cf-91ed-78848217e7f2	3d788114-35e1-4ba5-a16c-39a3056b78fa.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5494	TCGA-EJ-5494-01A	Primary Tumor
+3d6e64d2-5a31-4556-b263-dbe8d6d1ebaa	07532a39-80d0-436e-a2aa-fa172c9d21ff.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5495	TCGA-EJ-5495-01A	Primary Tumor
+d777c666-80ed-4878-9a9f-0f78a1d1caaf	7a3c3464-c1ab-4ff7-b826-c6f38d15b684.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5496	TCGA-EJ-5496-01A	Primary Tumor
+457ea661-5291-418b-abfb-c08ddefeeaff	fa1f9327-df9a-499f-bc56-c49088417617.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5497	TCGA-EJ-5497-01A	Primary Tumor
+0c99fd7e-87f9-4e82-82bb-9b35f3b3f671	7adecba0-ebe5-40c3-89db-39a213167a3a.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5498	TCGA-EJ-5498-01A	Primary Tumor
+d1bcb0c7-f603-4597-ae5a-83bf294d715d	10b332c1-5e60-4a3a-8f82-402892ea832d.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5499	TCGA-EJ-5499-01A	Primary Tumor
+55b83650-9704-4393-88f9-e3ab8bbb56ad	e35f81c3-1ddc-425b-a9b0-7ccc4a54501b.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5501	TCGA-EJ-5501-01A	Primary Tumor
+0afc563f-75a9-4e20-9094-9bbc83bfb7f6	847afc38-d95f-4405-8d53-ce73a915ce5b.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5502	TCGA-EJ-5502-01A	Primary Tumor
+51dc1c02-21ae-47aa-aed7-ccf695eb3015	7d2a148b-6dbe-4ba4-889b-907a8ddcefae.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5503	TCGA-EJ-5503-01A	Primary Tumor
+79958b9d-8660-45b6-a9e9-3b7d7c3bc8bc	ca8de3ae-b88e-455b-88a7-8965e9bb1db7.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5504	TCGA-EJ-5504-01A	Primary Tumor
+da6e7b4e-fa86-46d8-bb10-08b88a4fe87d	bc373858-528c-48d5-b548-70f9a49a79b0.rna_seq.augmented_star_gene_counts.tsv	TCGA-EJ-5505	TCGA-EJ-5505-01A	Primary Tumor
