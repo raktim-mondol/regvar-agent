@@ -33,6 +33,7 @@ from datetime import datetime
 from pathlib import Path
 
 import click
+from rich import box
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
@@ -53,6 +54,13 @@ REGVAR_THEME = Theme({
     "assay":   "bold blue",
     "score":   "bold white",
     "dim":     "dim",
+    # soft pastel palette (welcome screen)
+    "soft_purple": "#b4a7d6",
+    "soft_teal":   "#80cbc4",
+    "soft_blue":   "#90caf9",
+    "soft_green":  "#a5d6a7",
+    "soft_amber":  "#ffe082",
+    "soft_pink":   "#f48fb1",
 })
 
 console        = Console(theme=REGVAR_THEME, stderr=True)
@@ -72,6 +80,78 @@ def _banner() -> None:
             padding=(0, 1),
         )
     )
+
+
+def _welcome_screen() -> None:
+    """Full welcome screen shown when ``regvar`` is invoked with no subcommand."""
+    c = stdout_console
+
+    # ── ASCII logo panel ────────────────────────────────────────────────────
+    logo = Text.from_markup(
+        "[soft_purple]        ___         _               [/soft_purple]\n"
+        "[soft_purple]  _ __  ___| |___   _(_) __ _ _ __ [/soft_purple]\n"
+        "[soft_teal] | '__|/ _ | __\\ \\ / / |/ _` | '__|[/soft_teal]\n"
+        "[soft_blue] | |  |  __| |_ \\ V /| | (_| | |   [/soft_blue]\n"
+        "[soft_green] |_|   \\___|\\__| \\_/ |_|\\__, |_|   [/soft_green]\n"
+        "[soft_green]                         |___/      [/soft_green]\n"
+        "\n"
+        " [dim]AlphaGenome-powered regulatory variant triage · v0.1.0[/dim]"
+    )
+    c.print(Panel(logo, border_style="soft_purple", padding=(0, 2)))
+    c.print()
+
+    # ── command reference table ─────────────────────────────────────────────
+    table = Table(
+        title="Command Reference",
+        title_style="bold soft_purple",
+        border_style="soft_purple",
+        box=box.ROUNDED,
+        show_lines=False,
+        pad_edge=True,
+    )
+    table.add_column("Category",    style="soft_purple", no_wrap=True, width=14)
+    table.add_column("Command",     style="soft_teal",   no_wrap=True, width=22)
+    table.add_column("Description", style="white")
+    table.add_column("Example",     style="dim",         max_width=44)
+
+    table.add_row("Scoring",       "score",               "Score a single variant",               "regvar score chr8 127401060 G T")
+    table.add_row("",              "assays",              "List supported assays",                "regvar assays")
+    table.add_section()
+
+    table.add_row("Visualization", "plot effects",        "Barplot of variant effects",           "regvar plot effects chr8 ... --output e.png")
+    table.add_section()
+
+    table.add_row("Agent",         "agent run",           "Full triage loop over candidates",     "regvar agent run variants.tsv")
+    table.add_row("",              "agent chat",          "Interactive REPL with the agent",      "regvar agent chat")
+    table.add_section()
+
+    table.add_row("MOFA+",         "mofa build",          "Build MOFA+ view matrices",            "regvar mofa build scores.tsv genotypes.tsv")
+    table.add_row("",              "mofa run",            "Train MOFA+ model",                    "regvar mofa run views.h5ad")
+    table.add_row("",              "mofa compare",        "Compare with vs. without variants",    "regvar mofa compare views.h5ad")
+    table.add_section()
+
+    table.add_row("Utilities",     "cache info",          "Show cache size and entry count",      "regvar cache info")
+    table.add_row("",              "cache clear",         "Delete cached entries",                "regvar cache clear")
+    table.add_row("",              "tui",                 "Launch interactive TUI",               "regvar tui")
+    table.add_row("",              "report generate",     "Generate PDF reports",                 "regvar report generate scores.tsv report.md")
+
+    c.print(table)
+    c.print()
+
+    # ── quick-start panel ───────────────────────────────────────────────────
+    quick_start = Text.from_markup(
+        "[soft_amber]Quick start[/soft_amber]\n\n"
+        "  [soft_teal]regvar score[/soft_teal]  chr8 127401060 G T             "
+        "[dim]  Score a variant and print top effects[/dim]\n"
+        "  [soft_teal]regvar agent run[/soft_teal]  examples/candidates.tsv "
+        "[dim]  Run the full AI triage loop[/dim]\n"
+        "  [soft_teal]regvar plot effects[/soft_teal]  chr8 ... --output p.png "
+        "[dim]  Save a barplot of effects[/dim]\n"
+        "  [soft_teal]regvar assays[/soft_teal]                              "
+        "[dim]  List all supported functional assays[/dim]"
+    )
+    c.print(Panel(quick_start, border_style="soft_amber", padding=(0, 2)))
+    c.print()
 
 
 def _save_markdown(text: str, path: Path) -> None:
@@ -461,8 +541,7 @@ def cli(ctx: click.Context, config_path: str | None) -> None:
 
         ctx.default_map = top_map
     if ctx.invoked_subcommand is None:
-        _banner()
-        click.echo(ctx.get_help())
+        _welcome_screen()
 
 
 # ---------------------------------------------------------------------------
